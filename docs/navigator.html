@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>navigator</title>
+    <style>
+        body {
+            margin: auto;
+            width: 800px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        td {
+            border-bottom: 1px solid silver;
+            padding-right: 10px;
+            vertical-align: top;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+    </style>
+    <script>
+      const mapValue = (value, depth = 0) => {
+        let mapped
+        if (typeof value === 'object' && depth <= 3) {
+          mapped = document.createElement('table')
+          for (let key in value) {
+            const tr = document.createElement('tr')
+
+            const tdLeft = document.createElement('td')
+            tdLeft.innerHTML = key
+            tr.appendChild(tdLeft)
+
+            const tdRight = document.createElement('td')
+            tdRight.appendChild(mapValue(value[key], depth + 1))
+            tr.appendChild(tdRight)
+
+            mapped.appendChild(tr)
+          }
+        } else {
+          mapped = document.createElement('span')
+          if (value === null) {
+            mapped.innerHTML = '(null)'
+          } else if (typeof value === 'string') {
+            mapped.innerHTML = `"${value}"`
+          } else {
+            mapped.innerHTML = value
+          }
+        }
+
+        const result = document.createElement('div')
+        result.appendChild(mapped)
+
+        return result
+      }
+
+      document.addEventListener("DOMContentLoaded", function() {
+        console.log(navigator)
+        document.querySelector('#main').appendChild(mapValue(navigator))
+      })
+    </script>
+  </head>
+  <body>
+    <h1>navigator</h1>
+    <div id="main"></div>
+  </body>
+</html>
